@@ -23,15 +23,12 @@ public class DebitPageTest {
     private MainPage mainPage;
     private DebitPage debitPage;
 
-
     @BeforeEach
     void setupTest() {
 
         open("http://localhost:8080/");
         mainPage = new MainPage();
         debitPage = mainPage.goToDebitPage();
-
-
     }
 
     @AfterEach
@@ -76,16 +73,6 @@ public class DebitPageTest {
         Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getCardNumberForEmptyField());
         debitPage.setRequiredFieldVisible();
-    }
-
-    @Test
-    @DisplayName("Покупка картой с номером из 14 цифр")
-    void shouldTestThrteBuyWithA14DigitCard() {
-
-        Configuration.holdBrowserOpen = true;
-        var startPage = new MainPage();
-        var debitPage = startPage.goToDebitPage();
-        $(byText("Купить")).parent().parent().click();
     }
 
     @Test
@@ -148,6 +135,114 @@ public class DebitPageTest {
 
         Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getMonthNotValid());
+        debitPage.setInvalidFormatVisible();
+    }
+
+    @Test
+    @DisplayName("Проверка пустого поля 'Год'")
+    void shouldTestEmptyYearField() {
+
+        Configuration.holdBrowserOpen = true;
+        debitPage.fillInCardInfo(DataHelper.getYearEmptyField());
+        debitPage.setRequiredFieldVisible();
+    }
+
+    @Test
+    @DisplayName("Покупка картой с нулевым полем 'Год'")
+    void shouldTestYearFieldOfZero() {
+
+        Configuration.holdBrowserOpen = true;
+        debitPage.fillInCardInfo(DataHelper.getYearOfZero());
+        debitPage.setInvalidFormatVisible();
+    }
+
+    @Test
+    @DisplayName("Покупка с истекшим сроком действия карты")
+    void shouldTestPatsValueForYearField() {
+
+        Configuration.holdBrowserOpen = true;
+        debitPage.fillInCardInfo(DataHelper.getThePastValueInTheYearField());
+        debitPage.setCardExpiredMessageVisible();
+    }
+
+    @Test
+    @DisplayName("Покупка с ненаступившим сроком действия карты")
+    void shouldTestFutureValueForYearField() {
+
+        Configuration.holdBrowserOpen = true;
+        debitPage.fillInCardInfo(DataHelper.getTheFutureValueInTheYearField());
+        debitPage.setInvalidCardExpirationDateMessageVisible();
+    }
+
+    @Test
+    @DisplayName("Проверка пустого поля 'Владелец'")
+    void shouldTestEmptyHolderField() {
+
+        Configuration.holdBrowserOpen = true;
+        debitPage.fillInCardInfo(DataHelper.getHolderEmptyField());
+        debitPage.setRequiredFieldVisible();
+    }
+
+    @Test
+    @DisplayName("Поле 'Владелец' состоит из одного имени")
+    void shouldTestHolderWithOneName() {
+
+        Configuration.holdBrowserOpen = true;
+        debitPage.fillInCardInfo(DataHelper.getHolderWithOneName());
+        debitPage.setInvalidFormatVisible();
+    }
+
+    @Test
+    @DisplayName("Значение поля 'Владелец' состоит из кириллицы")
+    void shouldTestHolderInCyrillic() {
+
+        Configuration.holdBrowserOpen = true;
+        debitPage.fillInCardInfo(DataHelper.getHolderInCyrillic());
+        debitPage.setInvalidFormatVisible();
+    }
+
+    @Test
+    @DisplayName("Значение поля 'Владелец' состоит из цифр")
+    void shouldTestHolderForDigits() {
+
+        Configuration.holdBrowserOpen = true;
+        debitPage.fillInCardInfo(DataHelper.getHolderFromDigits());
+        debitPage.setInvalidFormatVisible();
+    }
+
+    @Test
+    @DisplayName("Значение поля 'Владелец' состоит из спецсимволов")
+    void shouldTestHolderForSpecialCharacters() {
+
+        Configuration.holdBrowserOpen = true;
+        debitPage.fillInCardInfo(DataHelper.getHolderFromSpecialCharacters());
+        debitPage.setInvalidCharMessageVisible();
+    }
+
+    @Test
+    @DisplayName("Проверка пустого поля 'CVC/CVV'")
+    void shouldTestEmptyCVCField() {
+
+        Configuration.holdBrowserOpen = true;
+        debitPage.fillInCardInfo(DataHelper.getCVCEmptyField());
+        debitPage.setRequiredFieldVisible();
+    }
+
+    @Test
+    @DisplayName("Значение поля 'CVC/CVV' состоит из 2 цифр")
+    void shouldTestCVCTwoDigits() {
+
+        Configuration.holdBrowserOpen = true;
+        debitPage.fillInCardInfo(DataHelper.getCVCTwoDigits());
+        debitPage.setInvalidFormatVisible();
+    }
+
+    @Test
+    @DisplayName("Значение поля 'CVC/CVV' состоит из нулей")
+    void shouldTestCVCFieldOfZero() {
+
+        Configuration.holdBrowserOpen = true;
+        debitPage.fillInCardInfo(DataHelper.getCVCOfZero());
         debitPage.setInvalidFormatVisible();
     }
 

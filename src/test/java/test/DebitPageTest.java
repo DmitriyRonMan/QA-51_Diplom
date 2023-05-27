@@ -10,14 +10,8 @@ import org.junit.jupiter.api.Test;
 import page.DebitPage;
 import page.MainPage;
 
-import java.sql.SQLException;
-
-import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class DebitPageTest {
     private MainPage mainPage;

@@ -23,7 +23,7 @@ public class DataHelper {
 
     /*ДЛЯ ТЕСТОВ С ПОЛЕМ "НОМЕР КАРТЫ"*/
 
-    /*пусто поле "Номер карты"*/
+    /*пустое поле "Номер карты"*/
     public static CardInfo getCardNumberForEmptyField() {
         return new CardInfo("", getValidMonth(), getCurrentYear(), getValidHolder(), getValidCVV());
     }
@@ -98,11 +98,11 @@ public class DataHelper {
     }
     /*цифровое значение в поле "Владелец"*/
     public static CardInfo getHolderFromDigits() {
-        return new CardInfo("4444 4444 4444 4441", getValidMonth(), getCurrentYear(), "45657445 45745", getValidCVV());
+        return new CardInfo("4444 4444 4444 4441", getValidMonth(), getCurrentYear(), "23458 235", getValidCVV());
     }
     /*поле "Владелец" из спецсимовлов*/
     public static CardInfo getHolderFromSpecialCharacters() {
-        return new CardInfo("4444 4444 4444 4441", getValidMonth(), getCurrentYear(), "^$#^&# #$&#^*$", getValidCVV());
+        return new CardInfo("4444 4444 4444 4441", getValidMonth(), getCurrentYear(), ":%№;( :?;", getValidCVV());
     }
 
     /*ДЛЯ ТЕСТОВ С ПОЛЕМ "CVC/CVV"*/

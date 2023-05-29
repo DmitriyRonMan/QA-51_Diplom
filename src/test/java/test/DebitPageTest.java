@@ -1,12 +1,11 @@
 package test;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.logevents.SelenideLogger;
 import data.DataHelper;
 import data.SQLHelper;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.*;
 import page.DebitPage;
 import page.MainPage;
 
@@ -16,6 +15,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DebitPageTest {
     private MainPage mainPage;
     private DebitPage debitPage;
+
+    @BeforeAll
+    static void setUpAll() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
+    }
+
+    @AfterAll
+    static void tearDownAll() {
+        SelenideLogger.removeListener("allure");
+    }
 
     @BeforeEach
     void setupTest() {
@@ -34,7 +43,6 @@ public class DebitPageTest {
     @DisplayName("Покупка картой со статусом APPROVED")
     void shouldTestBuyCardForStatusApproved() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getCardNumberForStatusApproved());
         debitPage.setSuccessNotificationVisible();
         assertEquals("APPROVED", SQLHelper.getStatusForPayment());
@@ -44,7 +52,6 @@ public class DebitPageTest {
     @DisplayName("Покупка картой со статусом DECLINED")
     void shouldTestBuyCardForStatusDeclined() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getCardNumberForStatusDeclined());
         debitPage.setErrorNotificationVisible();
         assertEquals("DECLINED", SQLHelper.getStatusForPayment());
@@ -54,7 +61,6 @@ public class DebitPageTest {
     @DisplayName("Покупка картой без статуса")
     void shouldTestBuyForCardOfNotStatus() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getNonStatusCardNumber());
         debitPage.setErrorNotificationVisible();
         assertEquals(null, SQLHelper.getStatusForPayment());
@@ -64,7 +70,6 @@ public class DebitPageTest {
     @DisplayName("Покупка картой с пустым полем 'Номер карты'")
     void shouldTestThePurchaseWithAnEmptyCardNumberField() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getCardNumberForEmptyField());
         debitPage.setRequiredFieldVisible();
     }
@@ -73,7 +78,6 @@ public class DebitPageTest {
     @DisplayName("Покупка картой с номером из 14 цифр")
     void shouldTestTheBuyWithA14DigitCard() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getCardNumberOf14Digits());
         debitPage.setInvalidFormatVisible();
     }
@@ -82,7 +86,6 @@ public class DebitPageTest {
     @DisplayName("Покупка картой с нулевым номером")
     void shouldTestTheBuyWithACardNumberZero() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getCardNumberOfZero());
         debitPage.setErrorNotificationVisible();
     }
@@ -91,7 +94,6 @@ public class DebitPageTest {
     @DisplayName("Проверка нижнего граничного значения поля 'Месяц'")
     void shouldTestTheLowerBoundaryValueOfTheMonthField() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getTheFirstMonth());
         debitPage.setSuccessNotificationVisible();
     }
@@ -100,7 +102,6 @@ public class DebitPageTest {
     @DisplayName("Проверка верхнего граничного значения поля 'Месяц'")
     void shouldTestTheUpperBoundaryValueOfTheMonthField() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getTheLastMonth());
         debitPage.setSuccessNotificationVisible();
     }
@@ -109,7 +110,6 @@ public class DebitPageTest {
     @DisplayName("Покупка картой с нулевым полем 'Месяц'")
     void shouldTestMonthFieldOfZero() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getMonthOfZero());
         debitPage.setInvalidCardExpirationDateMessageVisible();
     }
@@ -118,7 +118,6 @@ public class DebitPageTest {
     @DisplayName("Проверка пустого поля 'Месяц'")
     void shouldTestEmptyMonthField() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getMonthEmptyField());
         debitPage.setRequiredFieldVisible();
     }
@@ -127,7 +126,6 @@ public class DebitPageTest {
     @DisplayName("Проверка поля 'Месяц' со значением выше верхнего граничного значения")
     void shouldTestMonthFieldForOverUpperBoundaryValue() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getMonthNotValid());
         debitPage.setInvalidCardExpirationDateMessageVisible();
     }
@@ -136,7 +134,6 @@ public class DebitPageTest {
     @DisplayName("Проверка пустого поля 'Год'")
     void shouldTestEmptyYearField() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getYearEmptyField());
         debitPage.setRequiredFieldVisible();
     }
@@ -145,7 +142,6 @@ public class DebitPageTest {
     @DisplayName("Покупка картой с нулевым полем 'Год'")
     void shouldTestYearFieldOfZero() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getYearOfZero());
         debitPage.setCardExpiredMessageVisible();
     }
@@ -154,7 +150,6 @@ public class DebitPageTest {
     @DisplayName("Покупка с истекшим сроком действия карты")
     void shouldTestPatsValueForYearField() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getThePastValueInTheYearField());
         debitPage.setCardExpiredMessageVisible();
     }
@@ -163,7 +158,6 @@ public class DebitPageTest {
     @DisplayName("Покупка с ненаступившим сроком действия карты")
     void shouldTestFutureValueForYearField() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getTheFutureValueInTheYearField());
         debitPage.setInvalidCardExpirationDateMessageVisible();
     }
@@ -172,7 +166,6 @@ public class DebitPageTest {
     @DisplayName("Проверка пустого поля 'Владелец'")
     void shouldTestEmptyHolderField() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getHolderEmptyField());
         debitPage.setRequiredFieldVisible();
     }
@@ -181,7 +174,6 @@ public class DebitPageTest {
     @DisplayName("Поле 'Владелец' состоит из одного имени")
     void shouldTestHolderWithOneName() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getHolderWithOneName());
         debitPage.setInvalidFormatVisible();
     }
@@ -190,7 +182,6 @@ public class DebitPageTest {
     @DisplayName("Значение поля 'Владелец' состоит из кириллицы")
     void shouldTestHolderInCyrillic() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getHolderInCyrillic());
         debitPage.setInvalidCharMessageVisible();
     }
@@ -199,7 +190,6 @@ public class DebitPageTest {
     @DisplayName("Значение поля 'Владелец' состоит из цифр")
     void shouldTestHolderForDigits() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getHolderFromDigits());
         debitPage.setInvalidCharMessageVisible();
     }
@@ -208,7 +198,6 @@ public class DebitPageTest {
     @DisplayName("Значение поля 'Владелец' состоит из спецсимволов")
     void shouldTestHolderForSpecialCharacters() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getHolderFromSpecialCharacters());
         debitPage.setInvalidCharMessageVisible();
     }
@@ -217,16 +206,14 @@ public class DebitPageTest {
     @DisplayName("Проверка пустого поля 'CVC/CVV'")
     void shouldTestEmptyCVCField() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getCVCEmptyField());
-        debitPage.setRequiredFieldVisible();
+        debitPage.textValidationForTheCVCField("Поле обязательно для заполнения");
     }
 
     @Test
     @DisplayName("Значение поля 'CVC/CVV' состоит из 2 цифр")
     void shouldTestCVCTwoDigits() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getCVCTwoDigits());
         debitPage.setInvalidFormatVisible();
     }
@@ -235,7 +222,6 @@ public class DebitPageTest {
     @DisplayName("Значение поля 'CVC/CVV' состоит из нулей")
     void shouldTestCVCFieldOfZero() {
 
-        Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getCVCOfZero());
         debitPage.setInvalidFormatVisible();
     }
@@ -243,9 +229,13 @@ public class DebitPageTest {
     @Test
     @DisplayName("Отправка пустой формы")
     void shouldTestSendingAnEmptyForm() {
-        Configuration.holdBrowserOpen = true;
+
         debitPage.fillInCardInfo(DataHelper.getFormFromEmptyFields());
-        debitPage.setErrorFor();
+        debitPage.textValidationForTheCardNumberField("Поле обязательно для заполнения");
+        debitPage.textValidationForTheMonthField("Поле обязательно для заполнения");
+        debitPage.textValidationForTheYearField("Поле обязательно для заполнения");
+        debitPage.textValidationForTheHolderField("Поле обязательно для заполнения");
+        debitPage.textValidationForTheCVCField("Поле обязательно для заполнения");
     }
 
 }

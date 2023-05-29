@@ -30,14 +30,6 @@ public class DebitPage {
     private SelenideElement invalidCardExpirationDateMessage = $(byText("Неверно указан срок действия карты"));
     private SelenideElement cardExpiredMessage = $(byText("Истёк срок действия карты"));
 
-    /*для пустой формы*/
-
-    private SelenideElement verificationErrorNumber = $$(".input__inner").findBy(text("Номер карты")).$(".input__sub");
-    private SelenideElement verificationErrorMonth = $$(".input__inner").findBy(text("Месяц")).$(".input__sub");
-    private SelenideElement verificationErrorYear = $$(".input__inner").findBy(text("Год")).$(".input__sub");
-    private SelenideElement verificationErrorOwner = $$(".input__inner").findBy(text("Владелец")).$(".input__sub");
-    private SelenideElement verificationErrorCVV = $$(".input__inner").findBy(text("CVC/CVV")).$(".input__sub");
-
     public DebitPage() {
         heading.shouldBe(visible);
     }
@@ -51,15 +43,28 @@ public class DebitPage {
         buttonContinue.click();
     }
 
-    public void setErrorFor() {
-        verificationErrorNumber.$(byText("Поле содержит недопустимые символы"));
-        verificationErrorMonth.$(byText("Поле содержит недопустимые символы"));
-        verificationErrorYear.$(byText("Поле содержит недопустимые символы"));
-        verificationErrorOwner.$(byText("Поле содержит недопустимые символы"));
-        verificationErrorCVV.$(byText("Поле содержит недопустимые символы"));
-
+    /*для проверки пустого поля*/
+    public void textValidationForTheCardNumberField(String text) {
+        cardNumberField.shouldHave(text(text), Duration.ofSeconds(12)).shouldBe(visible);
     }
 
+    public void textValidationForTheMonthField(String text) {
+        monthField.shouldHave(text(text), Duration.ofSeconds(12)).shouldBe(visible);
+    }
+
+    public void textValidationForTheYearField(String text) {
+        yearField.shouldHave(text(text), Duration.ofSeconds(12)).shouldBe(visible);
+    }
+
+    public void textValidationForTheHolderField(String text) {
+        holderField.shouldHave(text(text), Duration.ofSeconds(12)).shouldBe(visible);
+    }
+
+    public void textValidationForTheCVCField(String text) {
+        cvcField.shouldHave(text(text), Duration.ofSeconds(12)).shouldBe(visible);
+    }
+
+    /*методы для вывода сообщений*/
     public void setSuccessNotificationVisible() {
         successNOTIF.shouldBe(visible, Duration.ofSeconds(12));
     }

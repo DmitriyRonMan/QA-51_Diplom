@@ -1,12 +1,11 @@
 package test;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.logevents.SelenideLogger;
 import data.DataHelper;
 import data.SQLHelper;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.*;
 import page.CreditPage;
 import page.MainPage;
 
@@ -16,6 +15,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CreditPageTest {
     private MainPage mainPage;
     private CreditPage creditPage;
+
+    @BeforeAll
+    static void setUpAll() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
+    }
+
+    @AfterAll
+    static void tearDownAll() {
+        SelenideLogger.removeListener("allure");
+    }
 
     @BeforeEach
     void setupTest() {
@@ -34,7 +43,6 @@ public class CreditPageTest {
     @DisplayName("Покупка картой со статусом APPROVED")
     void shouldTestBuyCardForStatusApproved() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getCardNumberForStatusApproved());
         creditPage.setSuccessNotificationVisible();
         assertEquals("APPROVED", SQLHelper.getStatusForCredit());
@@ -44,7 +52,6 @@ public class CreditPageTest {
     @DisplayName("Покупка картой со статусом DECLINED")
     void shouldTestBuyCardForStatusDeclined() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getCardNumberForStatusDeclined());
         creditPage.setErrorNotificationVisible();
         assertEquals("DECLINED", SQLHelper.getStatusForCredit());
@@ -54,7 +61,6 @@ public class CreditPageTest {
     @DisplayName("Покупка картой без статуса")
     void shouldTestBuyForCardOfNotStatus() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getNonStatusCardNumber());
         creditPage.setErrorNotificationVisible();
         assertEquals(null, SQLHelper.getStatusForCredit());
@@ -64,7 +70,6 @@ public class CreditPageTest {
     @DisplayName("Покупка картой с пустым полем 'Номер карты'")
     void shouldTestThePurchaseWithAnEmptyCardNumberField() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getCardNumberForEmptyField());
         creditPage.setRequiredFieldVisible();
     }
@@ -73,7 +78,6 @@ public class CreditPageTest {
     @DisplayName("Покупка картой с номером из 14 цифр")
     void shouldTestTheBuyWithA14DigitCard() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getCardNumberOf14Digits());
         creditPage.setInvalidFormatVisible();
     }
@@ -82,7 +86,6 @@ public class CreditPageTest {
     @DisplayName("Покупка картой с нулевым номером")
     void shouldTestTheBuyWithACardNumberZero() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getCardNumberOfZero());
         creditPage.setErrorNotificationVisible();
     }
@@ -91,7 +94,6 @@ public class CreditPageTest {
     @DisplayName("Проверка нижнего граничного значения поля 'Месяц'")
     void shouldTestTheLowerBoundaryValueOfTheMonthField() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getTheFirstMonth());
         creditPage.setSuccessNotificationVisible();
     }
@@ -100,7 +102,6 @@ public class CreditPageTest {
     @DisplayName("Проверка верхнего граничного значения поля 'Месяц'")
     void shouldTestTheUpperBoundaryValueOfTheMonthField() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getTheLastMonth());
         creditPage.setSuccessNotificationVisible();
     }
@@ -109,7 +110,6 @@ public class CreditPageTest {
     @DisplayName("Покупка картой с нулевым полем 'Месяц'")
     void shouldTestMonthFieldOfZero() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getMonthOfZero());
         creditPage.setInvalidCardExpirationDateMessageVisible();
     }
@@ -118,7 +118,6 @@ public class CreditPageTest {
     @DisplayName("Проверка пустого поля 'Месяц'")
     void shouldTestEmptyMonthField() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getMonthEmptyField());
         creditPage.setRequiredFieldVisible();
     }
@@ -127,7 +126,6 @@ public class CreditPageTest {
     @DisplayName("Проверка поля 'Месяц' со значением выше верхнего граничного значения")
     void shouldTestMonthFieldForOverUpperBoundaryValue() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getMonthNotValid());
         creditPage.setInvalidCardExpirationDateMessageVisible();
     }
@@ -136,7 +134,6 @@ public class CreditPageTest {
     @DisplayName("Проверка пустого поля 'Год'")
     void shouldTestEmptyYearField() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getYearEmptyField());
         creditPage.setRequiredFieldVisible();
     }
@@ -145,7 +142,6 @@ public class CreditPageTest {
     @DisplayName("Покупка картой с нулевым полем 'Год'")
     void shouldTestYearFieldOfZero() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getYearOfZero());
         creditPage.setCardExpiredMessageVisible();
     }
@@ -154,7 +150,6 @@ public class CreditPageTest {
     @DisplayName("Покупка с истекшим сроком действия карты")
     void shouldTestPatsValueForYearField() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getThePastValueInTheYearField());
         creditPage.setCardExpiredMessageVisible();
     }
@@ -163,7 +158,6 @@ public class CreditPageTest {
     @DisplayName("Покупка с ненаступившим сроком действия карты")
     void shouldTestFutureValueForYearField() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getTheFutureValueInTheYearField());
         creditPage.setInvalidCardExpirationDateMessageVisible();
     }
@@ -172,7 +166,6 @@ public class CreditPageTest {
     @DisplayName("Проверка пустого поля 'Владелец'")
     void shouldTestEmptyHolderField() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getHolderEmptyField());
         creditPage.setRequiredFieldVisible();
     }
@@ -181,7 +174,6 @@ public class CreditPageTest {
     @DisplayName("Поле 'Владелец' состоит из одного имени")
     void shouldTestHolderWithOneName() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getHolderWithOneName());
         creditPage.setInvalidFormatVisible();
     }
@@ -190,7 +182,6 @@ public class CreditPageTest {
     @DisplayName("Значение поля 'Владелец' состоит из кириллицы")
     void shouldTestHolderInCyrillic() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getHolderInCyrillic());
         creditPage.setInvalidCharMessageVisible();
     }
@@ -199,7 +190,6 @@ public class CreditPageTest {
     @DisplayName("Значение поля 'Владелец' состоит из цифр")
     void shouldTestHolderForDigits() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getHolderFromDigits());
         creditPage.setInvalidCharMessageVisible();
     }
@@ -208,7 +198,6 @@ public class CreditPageTest {
     @DisplayName("Значение поля 'Владелец' состоит из спецсимволов")
     void shouldTestHolderForSpecialCharacters() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getHolderFromSpecialCharacters());
         creditPage.setInvalidCharMessageVisible();
     }
@@ -217,16 +206,14 @@ public class CreditPageTest {
     @DisplayName("Проверка пустого поля 'CVC/CVV'")
     void shouldTestEmptyCVCField() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getCVCEmptyField());
-        creditPage.setRequiredFieldVisible();
+        creditPage.textValidationForTheCVCField("Поле обязательно для заполнения");
     }
 
     @Test
     @DisplayName("Значение поля 'CVC/CVV' состоит из 2 цифр")
     void shouldTestCVCTwoDigits() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getCVCTwoDigits());
         creditPage.setInvalidFormatVisible();
     }
@@ -235,7 +222,6 @@ public class CreditPageTest {
     @DisplayName("Значение поля 'CVC/CVV' состоит из нулей")
     void shouldTestCVCFieldOfZero() {
 
-        Configuration.holdBrowserOpen = true;
         creditPage.fillInCardInfo(DataHelper.getCVCOfZero());
         creditPage.setInvalidFormatVisible();
     }
@@ -243,8 +229,12 @@ public class CreditPageTest {
     @Test
     @DisplayName("Отправка пустой формы")
     void shouldTestSendingAnEmptyForm() {
-        Configuration.holdBrowserOpen = true;
+
         creditPage.fillInCardInfo(DataHelper.getFormFromEmptyFields());
-        creditPage.setFormEmpty();
+        creditPage.textValidationForTheCardNumberField("Поле обязательно для заполнения");
+        creditPage.textValidationForTheMonthField("Поле обязательно для заполнения");
+        creditPage.textValidationForTheYearField("Поле обязательно для заполнения");
+        creditPage.textValidationForTheHolderField("Поле обязательно для заполнения");
+        creditPage.textValidationForTheCVCField("Поле обязательно для заполнения");
     }
 }

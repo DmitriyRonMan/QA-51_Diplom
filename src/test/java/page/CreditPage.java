@@ -12,6 +12,7 @@ import static com.codeborne.selenide.Selenide.$$;
 
 public class CreditPage {
 
+    /*для полей*/
     private SelenideElement heading = $$("h3").find(text("Кредит по данным карты"));
     private SelenideElement cardNumberField = $("[placeholder='0000 0000 0000 0000']");
     private SelenideElement monthField = $("[placeholder='08']");
@@ -20,20 +21,22 @@ public class CreditPage {
     private SelenideElement cvcField = $("[placeholder='999']");
     private SelenideElement buttonContinue = $$("button").find(exactText("Продолжить"));
 
+    /*для вывода сообщений*/
     private SelenideElement successNOTIF = $(".notification_status_ok");
-
     private SelenideElement errorNOTIF = $(".notification_status_error");
-
     private SelenideElement requiredField = $(byText("Поле обязательно для заполнения"));
-
     private SelenideElement invalidFormat = $(byText("Неверный формат"));
-
     private SelenideElement invalidCharMessage = $(byText("Поле содержит недопустимые символы"));
-
     private SelenideElement invalidCardExpirationDateMessage = $(byText("Неверно указан срок действия карты"));
-
     private SelenideElement cardExpiredMessage = $(byText("Истёк срок действия карты"));
 
+    /*для пустой формы*/
+
+    private SelenideElement verificationErrorNumber = $$(".input__inner").findBy(text("Номер карты")).$(".input__sub");
+    private SelenideElement verificationErrorMonth = $$(".input__inner").findBy(text("Месяц")).$(".input__sub");
+    private SelenideElement verificationErrorYear = $$(".input__inner").findBy(text("Год")).$(".input__sub");
+    private SelenideElement verificationErrorOwner = $$(".input__inner").findBy(text("Владелец")).$(".input__sub");
+    private SelenideElement verificationErrorCVV = $$(".input__inner").findBy(text("CVC/CVV")).$(".input__sub");
     public CreditPage() {
         heading.shouldBe(visible);
     }
@@ -45,6 +48,14 @@ public class CreditPage {
         holderField.sendKeys(cardInfo.getHolder());
         cvcField.sendKeys(cardInfo.getCvc());
         buttonContinue.click();
+    }
+
+    public void setFormEmpty() {
+        cardNumberField.$(byText("Поле содержит недопустимые символы"));
+        monthField.$(byText("Поле содержит недопустимые символы"));
+        yearField.$(byText("Поле содержит недопустимые символы"));
+        holderField.$(byText("Поле содержит недопустимые символы"));
+        cvcField.$(byText("Поле содержит недопустимые символы"));
     }
 
     public void setSuccessNotificationVisible() {

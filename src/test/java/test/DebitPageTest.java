@@ -40,7 +40,6 @@ public class DebitPageTest {
         assertEquals("APPROVED", SQLHelper.getStatusForPayment());
     }
 
-    /*скрин 1 баг*/
     @Test
     @DisplayName("Покупка картой со статусом DECLINED")
     void shouldTestBuyCardForStatusDeclined() {
@@ -61,7 +60,6 @@ public class DebitPageTest {
         assertEquals(null, SQLHelper.getStatusForPayment());
     }
 
-    /*скрин 8 баг*/
     @Test
     @DisplayName("Покупка картой с пустым полем 'Номер карты'")
     void shouldTestThePurchaseWithAnEmptyCardNumberField() {
@@ -116,7 +114,6 @@ public class DebitPageTest {
         debitPage.setInvalidCardExpirationDateMessageVisible();
     }
 
-    /*скрин 9 баг*/
     @Test
     @DisplayName("Проверка пустого поля 'Месяц'")
     void shouldTestEmptyMonthField() {
@@ -135,7 +132,6 @@ public class DebitPageTest {
         debitPage.setInvalidCardExpirationDateMessageVisible();
     }
 
-    /*скрин 10 баг*/
     @Test
     @DisplayName("Проверка пустого поля 'Год'")
     void shouldTestEmptyYearField() {
@@ -181,7 +177,6 @@ public class DebitPageTest {
         debitPage.setRequiredFieldVisible();
     }
 
-    /*скрин 2 баг*/
     @Test
     @DisplayName("Поле 'Владелец' состоит из одного имени")
     void shouldTestHolderWithOneName() {
@@ -191,7 +186,6 @@ public class DebitPageTest {
         debitPage.setInvalidFormatVisible();
     }
 
-    /*скрин 3 баг*/
     @Test
     @DisplayName("Значение поля 'Владелец' состоит из кириллицы")
     void shouldTestHolderInCyrillic() {
@@ -201,7 +195,6 @@ public class DebitPageTest {
         debitPage.setInvalidCharMessageVisible();
     }
 
-    /*скрин 4 баг*/
     @Test
     @DisplayName("Значение поля 'Владелец' состоит из цифр")
     void shouldTestHolderForDigits() {
@@ -211,7 +204,6 @@ public class DebitPageTest {
         debitPage.setInvalidCharMessageVisible();
     }
 
-    /*скрин 5 баг*/
     @Test
     @DisplayName("Значение поля 'Владелец' состоит из спецсимволов")
     void shouldTestHolderForSpecialCharacters() {
@@ -221,7 +213,6 @@ public class DebitPageTest {
         debitPage.setInvalidCharMessageVisible();
     }
 
-    /*скрин 6 баг*/
     @Test
     @DisplayName("Проверка пустого поля 'CVC/CVV'")
     void shouldTestEmptyCVCField() {
@@ -240,7 +231,6 @@ public class DebitPageTest {
         debitPage.setInvalidFormatVisible();
     }
 
-    /*скрин 7 баг*/
     @Test
     @DisplayName("Значение поля 'CVC/CVV' состоит из нулей")
     void shouldTestCVCFieldOfZero() {
@@ -248,6 +238,14 @@ public class DebitPageTest {
         Configuration.holdBrowserOpen = true;
         debitPage.fillInCardInfo(DataHelper.getCVCOfZero());
         debitPage.setInvalidFormatVisible();
+    }
+
+    @Test
+    @DisplayName("Отправка пустой формы")
+    void shouldTestSendingAnEmptyForm() {
+        Configuration.holdBrowserOpen = true;
+        debitPage.fillInCardInfo(DataHelper.getFormFromEmptyFields());
+        debitPage.setErrorFor();
     }
 
 }

@@ -12,6 +12,7 @@ import static com.codeborne.selenide.Selenide.$$;
 
 public class DebitPage {
 
+    /*для полей*/
     private SelenideElement heading = $$("h3").find(text("Оплата по карте"));
     private SelenideElement cardNumberField = $("[placeholder='0000 0000 0000 0000']");
     private SelenideElement monthField = $("[placeholder='08']");
@@ -20,19 +21,22 @@ public class DebitPage {
     private SelenideElement cvcField = $("[placeholder='999']");
     private SelenideElement buttonContinue = $$("button").find(exactText("Продолжить"));
 
+    /*для вывода сообщений*/
     private SelenideElement successNOTIF = $(".notification_status_ok");
-
     private SelenideElement errorNOTIF = $(".notification_status_error");
-
     private SelenideElement requiredField = $(byText("Поле обязательно для заполнения"));
-
     private SelenideElement invalidFormat = $(byText("Неверный формат"));
-
     private SelenideElement invalidCharMessage = $(byText("Поле содержит недопустимые символы"));
-
     private SelenideElement invalidCardExpirationDateMessage = $(byText("Неверно указан срок действия карты"));
-
     private SelenideElement cardExpiredMessage = $(byText("Истёк срок действия карты"));
+
+    /*для пустой формы*/
+
+    private SelenideElement verificationErrorNumber = $$(".input__inner").findBy(text("Номер карты")).$(".input__sub");
+    private SelenideElement verificationErrorMonth = $$(".input__inner").findBy(text("Месяц")).$(".input__sub");
+    private SelenideElement verificationErrorYear = $$(".input__inner").findBy(text("Год")).$(".input__sub");
+    private SelenideElement verificationErrorOwner = $$(".input__inner").findBy(text("Владелец")).$(".input__sub");
+    private SelenideElement verificationErrorCVV = $$(".input__inner").findBy(text("CVC/CVV")).$(".input__sub");
 
     public DebitPage() {
         heading.shouldBe(visible);
@@ -45,6 +49,15 @@ public class DebitPage {
         holderField.sendKeys(cardInfo.getHolder());
         cvcField.sendKeys(cardInfo.getCvc());
         buttonContinue.click();
+    }
+
+    public void setErrorFor() {
+        verificationErrorNumber.$(byText("Поле содержит недопустимые символы"));
+        verificationErrorMonth.$(byText("Поле содержит недопустимые символы"));
+        verificationErrorYear.$(byText("Поле содержит недопустимые символы"));
+        verificationErrorOwner.$(byText("Поле содержит недопустимые символы"));
+        verificationErrorCVV.$(byText("Поле содержит недопустимые символы"));
+
     }
 
     public void setSuccessNotificationVisible() {

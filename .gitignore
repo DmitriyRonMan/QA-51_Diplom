@@ -1,14 +1,8 @@
 Thumbs.db*
-.DS_Store*
-node_modules
-target
+.DS_Store
 HELP.md
 .gradle
-.allure/
 build/
-data/
-data_mysql/
-gate-simulator/
 
 ### STS ###
 .apt_generated
@@ -21,6 +15,7 @@ gate-simulator/
 
 ### IntelliJ IDEA ###
 .idea
+.main
 *.iws
 *.iml
 *.ipr

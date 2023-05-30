@@ -1,9 +1,14 @@
+Thumbs.db*
+.DS_Store*
+node_modules
+target
 HELP.md
 .gradle
+.allure/
 build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**
-!**/src/test/**
+data/
+data_mysql/
+gate-simulator/
 
 ### STS ###
 .apt_generated
@@ -39,3 +44,8 @@ out/
 *.zip
 *.tar.gz
 *.rar
+
+### Exclusions ###
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**
+!**/src/test/**
